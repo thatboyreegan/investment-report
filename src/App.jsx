@@ -1,5 +1,5 @@
 import React, { useState, useRef, useMemo } from 'react';
-import { Landmark, MapPin, Scale, Home, AlertTriangle, Building, Zap, Droplet, Wallet, Calendar, CheckCircle, ArrowLeft, TrendingUp, ChevronDown, ChevronRight } from 'lucide-react';
+import { Landmark, MapPin, Scale, Home, AlertTriangle, Building, Zap, Droplet, Wallet, Calendar, CheckCircle, ArrowLeft, TrendingUp, ChevronDown, ChevronRight, ChevronLeft } from 'lucide-react';
 
 // Color Palette based on the provided image:
 const PRIMARY_NAVY = '#0C1835'; // Deep Navy Background
@@ -50,7 +50,7 @@ const INVESTMENT_DATA = [
     size: '1/8 Acre Residential Plot',
     price: 'KES 350,000',
     keyNote: 'High-entry value, Ready Titles.',
-    link: 'https://placeholder.com/thigio-gardens',
+    link: 'https://dennkarmproperties.com/properties/barizi-gardens-phase-i-1-8th-acre-residential-plots/',
     amenities: [{ icon: CheckCircle, text: 'Ready Title Deeds' }, { icon: Calendar, text: 'Installment Plans' }, { icon: MapPin, text: 'Developed Access Roads' }],
     dueDiligence: 'Clean social media sentiment, no active court cases found.',
     breakdown: [{ title: 'Investment Rationale', content: 'Located 40km from Nairobi CBD, this area is rapidly developing, promising high capital appreciation over the next 3-5 years. Ideal for land banking or future residential development.' }],
@@ -64,7 +64,7 @@ const INVESTMENT_DATA = [
     size: '400 m² Residential Plot',
     price: 'KES 1,900,000',
     keyNote: 'Access to Sunset Creek; excellent mid-range investment.',
-    link: 'https://placeholder.com/mtwapa-creek-plots',
+    link: 'https://www.property24.co.ke/vacant-land-plot-for-sale-in-mtwapa-116613092',
     amenities: [{ icon: Building, text: 'Gated Options' }, { icon: Droplet, text: 'Creek Views' }, { icon: Scale, text: 'Freehold Title' }],
     dueDiligence: 'High demand for affordable coastal housing in Mtwapa corridor.',
     breakdown: [{ title: 'Coastal Rationale', content: 'These plots are strategically located to benefit from the northward expansion of Mombasa. Close proximity to essential amenities and the creek provides scenic appeal.' }],
@@ -125,8 +125,7 @@ const INVESTMENT_DATA = [
     amenities: [{ icon: Wallet, text: 'Installment Plans' }, { icon: Calendar, text: 'Q1 2026 Handover' }, { icon: CheckCircle, text: 'Tiled Floors' }],
     dueDiligence: 'Off-plan investment; track developer progress closely.', breakdown: [{ title: 'Off-Plan Potential', content: 'Buying off-plan guarantees higher capital appreciation upon completion.' }],
   },
-
-  // Diani (2 Listings)
+ 
   {
     id: 'a2_diani_2br_1', type: 'apartment', location: 'Diani', subLocation: 'Kwale', size: '2 Bedroom Unit', price: 'KES 8,500,000',
     keyNote: 'Ideal for short-term holiday rentals (Airbnb).', link: 'https://www.property24.co.ke/2-bedroom-apartment-flat-for-sale-in-diani-116534041',
@@ -140,7 +139,6 @@ const INVESTMENT_DATA = [
     dueDiligence: 'Premium pricing requires proven track record of rental yield.', breakdown: [{ title: 'Exclusivity', content: 'Penthouse exclusivity attracts high-net-worth renters for premium holidays.' }],
   },
 
-  // Nyali (3 Listings)
   {
     id: 'a3_nyali_2br', type: 'apartment', location: 'Nyali', subLocation: 'Mombasa', size: '2 Bedroom Unit', price: 'KES 11,500,000',
     keyNote: 'Close proximity to City Mall and Nyali Reef.', link: 'https://www.property24.co.ke/2-bedroom-apartment-flat-for-sale-in-nyali-116537005',
@@ -160,7 +158,7 @@ const INVESTMENT_DATA = [
     dueDiligence: 'Small units have high demand for single/double occupancy.', breakdown: [{ title: 'Rental Efficiency', content: 'Smaller size allows for lower entry price and potentially higher yield percentage.' }],
   },
   
-  // Kizingo (2 Listings)
+
   {
     id: 'a4_kizingo_3br_1', type: 'apartment', location: 'Kizingo', subLocation: 'Mombasa', size: '3 Bedroom Unit', price: 'KES 14,000,000',
     keyNote: 'Old Town proximity, historical prestige.', link: 'https://www.property24.co.ke/3-bedroom-apartment-flat-for-sale-in-kizingo-116394034',
@@ -174,7 +172,7 @@ const INVESTMENT_DATA = [
     dueDiligence: 'Verify view quality. Premium segment targets high-net-worth individuals.', breakdown: [{ title: 'Key Features', content: 'These units often feature private balconies and superior finishing materials.' }],
   },
 
-  // Rosslyn (1 Listing)
+
   {
     id: 'a5_rosslyn_2br', type: 'apartment', location: 'Rosslyn', subLocation: 'Nairobi', size: '2 Bedroom Diplomatic Suite', price: 'KES 28,000,000',
     keyNote: 'Diplomatic Zone Focus, high security and excellent management.', link: 'https://www.property24.co.ke/2-bedroom-apartment-flat-for-sale-in-rosslyn-116069651',
@@ -182,20 +180,16 @@ const INVESTMENT_DATA = [
     dueDiligence: 'Target market is expatriates and UN staff; rent is typically quoted in USD.', breakdown: [{ title: 'Investment Rationale', content: 'Proximity to UN/Embassies ensures steady demand for high-end, secure rentals.' }],
   },
 
-  // Lavington (1 Listing)
   {
     id: 'a6_lavington_3br', type: 'apartment', location: 'Lavington', subLocation: 'Nairobi', size: '3 Bedroom Unit', price: 'KES 17,500,000',
     keyNote: 'Proven rental corridor, immediate income potential.', link: 'https://www.property24.co.ke/3-bedroom-apartment-flat-for-sale-in-lavington-116606406',
-    amenies: [{ icon: Wallet, text: 'Flexible Payment Plans' }, { icon: CheckCircle, text: 'Proximity to Malls' }, { icon: Home, text: 'Borehole Water' }],
+    amenities: [{ icon: Wallet, text: 'Flexible Payment Plans' }, { icon: CheckCircle, text: 'Proximity to Malls' }, { icon: Home, text: 'Borehole Water' }],
     dueDiligence: 'Differentiation through quality finishing and strong management is key in this competitive area.', breakdown: [{ title: 'Investment Rationale', content: 'Established, high-demand residential area with excellent connectivity to schools and hospitals.' }],
   }
 ];
 
-// --- COMPONENTS ---
 
-// 1. Reusable Card for a Single Property
 const SinglePropertyCard = ({ item }) => (
-  // The subLocation is not always defined for Nairobi apartments, so we ensure it doesn't break the UI
   <div className={`bg-white p-6 rounded-xl shadow-lg border-t-4 mb-8 ${item.type === 'land' ? 'border-green-600' : 'border-blue-600'}`}>
     <div className="pb-4 mb-4 border-b border-gray-200">
       <h2 className="text-2xl font-extrabold text-gray-900 leading-tight">{item.title}</h2>
@@ -209,10 +203,7 @@ const SinglePropertyCard = ({ item }) => (
         <AlertTriangle className="h-4 w-4 mr-2" />
         {item.keyNote}
     </p>
-
-    {/* Amenities / Key Features */}
     <div className="grid grid-cols-2 gap-3 text-sm mb-6">
-        {/* Added a safeguard for item.amenities in case it's undefined */}
         {(item.amenities || []).map((amenity, index) => (
             <span key={index} className="flex items-center text-gray-600">
                 <amenity.icon className="h-4 w-4 mr-2 text-indigo-400" />
@@ -221,7 +212,6 @@ const SinglePropertyCard = ({ item }) => (
         ))}
     </div>
 
-    {/* Breakdown Section */}
     <h3 className="text-xl font-bold text-gray-800 mb-2">Details</h3>
     <div className="space-y-4">
       {item.breakdown.map((point, index) => (
@@ -231,8 +221,6 @@ const SinglePropertyCard = ({ item }) => (
         </div>
       ))}
     </div>
-
-    {/* Due Diligence */}
      <div className="mt-6 p-3 rounded-lg bg-yellow-50 border border-yellow-300">
         <p className="text-xs font-semibold text-yellow-800 flex items-center">
             <Scale className="h-4 w-4 mr-2" />
@@ -241,7 +229,7 @@ const SinglePropertyCard = ({ item }) => (
         <p className="text-xs mt-1 text-yellow-700">{item.dueDiligence}</p>
     </div>
 
-    {/* Final Call to Action - External Link */}
+  
     <div className="mt-6">
         <a 
             href={item.link} 
@@ -257,9 +245,9 @@ const SinglePropertyCard = ({ item }) => (
 );
 
 
-// 2. View to display one or more property cards (flexible for ID or Location)
+
 const PropertyDisplayView = ({ idOrLocation, navigateBack }) => {
-    // Determine if we are viewing a group (Location Name)
+    
     const allLocations = useMemo(() => {
         const landLocs = INVESTMENT_DATA.filter(i => i.type === 'land').map(i => i.location);
         const aptLocs = INVESTMENT_DATA.filter(i => i.type === 'apartment').map(i => i.location);
@@ -272,16 +260,13 @@ const PropertyDisplayView = ({ idOrLocation, navigateBack }) => {
     let pageTitle = '';
 
     if (isGroup) {
-        // Group View: Filter all properties (both land and apartments) by the location name
         propertiesToRender = INVESTMENT_DATA.filter(item => item.location === idOrLocation);
         
-        // Group the title based on type mix, though current implementation separates them.
-        // Simplified title generation for clarity in the UI
+
         const type = propertiesToRender[0]?.type === 'land' ? 'Land' : 'Apartment';
         pageTitle = `${idOrLocation} ${type} Opportunities (${propertiesToRender.length})`;
 
     } else {
-        // Fallback or Single Item View (Should not happen if all are grouped by location, but kept for robustness)
         const singleItem = INVESTMENT_DATA.find(item => item.id === idOrLocation);
         if (singleItem) {
             propertiesToRender.push(singleItem);
@@ -292,7 +277,7 @@ const PropertyDisplayView = ({ idOrLocation, navigateBack }) => {
     }
 
     return (
-        <div className="mb-12">
+        <div className="mb-12 w-full">
             <button
                 onClick={navigateBack}
                 className="mb-6 inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold transition-colors p-3 bg-white rounded-lg shadow-md"
@@ -316,7 +301,7 @@ const PropertyDisplayView = ({ idOrLocation, navigateBack }) => {
 };
 
 
-// 3. GrowthCarousel Component (Unchanged)
+
 const GrowthCarousel = ({ areas }) => {
   const scrollRef = useRef(null);
 
@@ -336,19 +321,19 @@ const GrowthCarousel = ({ areas }) => {
         <div className="space-y-2 mb-4">
             <p className="flex items-center text-sm font-medium">
                 <Building className="h-4 w-4 mr-2 text-gray-500" />
-                **Infrastructure:** {item.infrastructure}
+                Infrastructure: {item.infrastructure}
             </p>
         </div>
 
-        <div className="flex justify-between items-center pt-3 border-t border-gray-200">
+        <div className="flex flex-col  items-center pt-3 border-t border-gray-200">
              <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                 <TrendingUp className="w-3 h-3 mt-0.5 mr-1" />
                 {item.outlook}
             </span>
             {item.metrics.map((metric, index) => (
-                <div key={index} className="text-right">
-                    <p className="text-sm font-semibold text-gray-700">{metric.value}</p>
-                    <p className="text-xs text-gray-500">{metric.title}</p>
+                <div key={index} className="text-center w-full flex clex-col justify-center items-center">
+                    <p className="text-sm w-full font-semibold text-gray-700">{metric.value}</p>
+                    <p className="text-xs  w-full text-gray-500">{metric.title}</p>
                 </div>
             ))}
         </div>
@@ -367,13 +352,12 @@ const GrowthCarousel = ({ areas }) => {
         ))}
       </div>
       
-      {/* Scroll Buttons for desktop/mouse users */}
       <button 
         onClick={() => scroll('left')} 
         className="absolute left-0 top-1/2 -mt-6 p-2 bg-white rounded-full shadow-lg z-10 hover:bg-gray-100 hidden md:block"
         aria-label="Scroll left"
       >
-        <ArrowLeft className="h-5 w-5 text-indigo-600" />
+        <ChevronLeft className="h-5 w-5 text-indigo-600" />
       </button>
       <button 
         onClick={() => scroll('right')} 
@@ -393,19 +377,14 @@ const GrowthCarousel = ({ areas }) => {
   );
 };
 
-// 4. InvestmentAccordion (Refactored to handle Location Groups for both Land and Apartments)
 const InvestmentAccordion = ({ title, itemsToDisplay, investmentData, onSelectInvestment }) => {
   const [isOpen, setIsOpen] = useState(false);
   
-  // Land items will be location names (e.g., 'Diani'). Apartment items will be IDs (e.g., 'a1').
   const isLand = title.includes('Land');
-  
-  // For both Land and Apartments, we now display the location name and group listings under it.
   const displayItems = useMemo(() => {
     return itemsToDisplay.map(location => ({
         idOrLocation: location,
         title: location + ' Properties',
-        // Count listings based on type and location
         subtitle: `${investmentData.filter(i => i.location === location && (isLand ? i.type === 'land' : i.type === 'apartment')).length} listings available`,
         type: 'location',
     }));
@@ -414,8 +393,6 @@ const InvestmentAccordion = ({ title, itemsToDisplay, investmentData, onSelectIn
 
   return (
     <div className="border border-indigo-400 rounded-xl overflow-hidden shadow-lg mb-4">
-      {/* Accordion Header/Button */}
-      {/* Note: Tailwind requires literal values for complex colors like SECONARY_BLUE, so we use a safe bg-white for hover */}
       <button
         className={`w-full flex justify-between items-center p-5 font-bold text-lg transition-colors ${isOpen ? `bg-indigo-100 text-indigo-900` : 'bg-white text-gray-800 hover:bg-gray-50'}`}
         onClick={() => setIsOpen(!isOpen)}
@@ -423,8 +400,6 @@ const InvestmentAccordion = ({ title, itemsToDisplay, investmentData, onSelectIn
         <span>{title}</span>
         {isOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
       </button>
-
-      {/* Accordion Content/List */}
       {isOpen && (
         <div className="bg-white border-t border-indigo-200">
           <ul className="divide-y divide-indigo-50">
@@ -448,9 +423,6 @@ const InvestmentAccordion = ({ title, itemsToDisplay, investmentData, onSelectIn
   );
 };
 
-
-// --- MAIN APP COMPONENT ---
-
 const App = () => {
   const [currentView, setCurrentView] = useState('list'); // 'list' or 'detail'
   const [selectedIdOrLocation, setSelectedIdOrLocation] = useState(null); // Holds an ID (apartment) or Location (land)
@@ -465,54 +437,50 @@ const App = () => {
     setSelectedIdOrLocation(null);
   };
 
-  // Land: Get unique locations
   const landLocations = useMemo(() => {
     const locations = INVESTMENT_DATA.filter(i => i.type === 'land').map(i => i.location);
-    return [...new Set(locations)]; // ['Thigio', 'Mtwapa', 'Diani']
+    return [...new Set(locations)]; 
   }, []);
 
-  // Apartments: Get unique locations
   const apartmentLocations = useMemo(() => {
     const locations = INVESTMENT_DATA.filter(i => i.type === 'apartment').map(i => i.location);
-    return [...new Set(locations)]; // ['Mtwapa', 'Diani', 'Nyali', 'Kizingo', 'Rosslyn', 'Lavington']
+    return [...new Set(locations)]; 
   }, []);
 
 
   const renderContent = () => {
     if (currentView === 'detail' && selectedIdOrLocation) {
-      // Pass the Location string to the PropertyDisplayView
       return <PropertyDisplayView idOrLocation={selectedIdOrLocation} navigateBack={navigateBack} />;
     }
 
     return (
       <>
-        {/* Section 1: Introduction */}
-        <div className="mb-10 text-center w-full">
+        <div className="mb-10 text-center w-full  ">
             <h1 className="text-3xl font-extrabold text-white mb-4">
-                Hello vee!, this is what I have unearthed about investment in nairobi and mombasa.
-            </h1>
-            <p className="text-indigo-200 text-lg max-w-2xl mx-auto">
-                Dive into the market pulse for the country's two largest metropolitan areas.
+                Hello vee!
+          </h1>
+          <p className="text-indigo-200 text-lg max-w-2xl mx-auto">
+            This is a short rundown of what I have been finding out since Wednesday. We can go over a detailed version on call.
+          </p>
+            <p className=" text-sm pt-4 text-green-400 max-w-2xl mx-auto">
+                I have done the due diligence on all the listings available here. I will be updating them as I get more.
             </p>
         </div>
         
-        {/* Section 2: Potential Growth Areas (Carousel) */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-white border-b border-indigo-600 pb-2 mb-6 flex items-center">
-            <TrendingUp className="h-5 w-5 mr-2 text-green-400" />
+        <section className="mb-12 w-full">
+          <h2 className="text-2xl font-bold text-white border-b border-indigo-600 pb-2 mb-6 flex justify-center items-center">
+            
             Potential Growth Areas: Where Capital is Moving
           </h2>
           <GrowthCarousel areas={GROWTH_AREAS_DATA} />
         </section>
 
-        {/* Section 3: Investment Opportunities (Accordions) */}
-        <section className="mb-12 bg-white p-6 rounded-xl shadow-2xl">
+        <section className="mb-12 bg-white p-6 rounded-xl shadow-2xl w-full">
             <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-indigo-400 pb-2 mb-6 flex items-center">
                 <Wallet className="h-5 w-5 mr-2 text-indigo-600" />
                 Curated Investment Opportunities
             </h2>
             
-            {/* Land Investments Accordion - Lists locations */}
             <InvestmentAccordion 
                 title="Land Investments" 
                 itemsToDisplay={landLocations} 
@@ -520,7 +488,6 @@ const App = () => {
                 onSelectInvestment={navigateToDetails} 
             />
             
-            {/* Apartment Investments Accordion - Now lists locations */}
             <InvestmentAccordion 
                 title="Apartment Investments" 
                 itemsToDisplay={apartmentLocations} 
@@ -529,33 +496,28 @@ const App = () => {
             />
         </section>
 
-        {/* Call to Action (General) */}
-        <div className="mb-10 mt-10 p-6 rounded-xl shadow-md border-b-4 border-yellow-500 bg-white">
-          <p className="text-lg font-semibold text-gray-800 mb-2">Ready to secure your piece of Kenya?</p>
+        <div className="mb-10 mt-10 p-6 rounded-xl shadow-md   w-full">
+          <p className="text-lg font-semibold text-gray-200 mb-2">I am ready to start making calls to the agents who posted the listings. On your word I can reach out and start planning site visits.</p>
+           <p className="text-lg font-semibold text-red-500 mb-2">I have avoided Nairobi apartments for now, because of your interest in coast, but I can still add them to the list</p>
           <p className="text-sm text-gray-600 mb-4">
-            Click on any listing above for details, or contact a property consultant to start the title due diligence process.
+            We can talk about what I need to make this work then.
           </p>
-          <button className="w-full py-3 bg-yellow-500 text-white font-bold rounded-lg shadow-md hover:bg-yellow-600 transition-colors flex items-center justify-center">
-            <Calendar className="h-5 w-5 mr-2" />
-            Schedule a Site Visit or Consultation
-          </button>
+         
         </div>
       </>
     );
   };
 
   return (
-    <div style={{ backgroundColor: PRIMARY_NAVY }} className="min-h-screen font-sans">
-      {/* Tailwind CDN is included here to ensure styles load correctly */}
+    <div style={{ backgroundColor: PRIMARY_NAVY }} className="min-h-screen w-screen font-sans">
       <script src="https://cdn.tailwindcss.com"></script>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <main className="w-full px-4 sm:px-6 lg:px-8 py-10">
         {renderContent()}
       </main>
 
-      {/* Footer (Simplified) */}
       <footer className="bg-gray-900 text-white py-6">
-        <div className="max-w-4xl mx-auto px-4 text-center text-sm">
+        <div className="w-full px-4 text-center text-sm">
           <p>&copy; 2025 Investment Pulse. Your Trusted Partner in Real Estate Investment.</p>
         </div>
       </footer>
