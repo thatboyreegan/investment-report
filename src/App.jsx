@@ -280,7 +280,7 @@ const PropertyDisplayView = ({ idOrLocation, navigateBack }) => {
         <div className="mb-12 w-full">
             <button
                 onClick={navigateBack}
-                className="mb-6 inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold transition-colors p-3 bg-white rounded-lg shadow-md"
+                className="mb-6 inline-flex items-center text-gray-200 hover:text-white font-semibold  p-3  rounded-lg shadow-md"
             >
                 <ArrowLeft className="h-5 w-5 mr-2" />
                 Back to Investment Options
@@ -314,25 +314,25 @@ const GrowthCarousel = ({ areas }) => {
   };
 
   const GrowthCard = ({ item }) => (
-    <div className="flex-shrink-0 w-80 md:w-96 snap-center bg-white p-6 rounded-xl shadow-lg border-t-4 border-indigo-500 text-gray-800">
-        <h3 className="text-xl font-bold mb-2 text-indigo-800">{item.region}</h3>
-        <p className="text-xs text-gray-500 mb-3">{item.detail}</p>
+    <div className="flex-shrink-0 w-80 md:w-96 snap-center bg-white/20 p-6 rounded-xl shadow-lg border-t-4 border-indigo-500 text-gray-800">
+        <h3 className="text-xl font-bold mb-2 text-green-500">{item.region}</h3>
+        <p className="text-xs text-yellow-500 mb-3">{item.detail}</p>
         
         <div className="space-y-2 mb-4">
-            <p className="flex items-center text-sm font-medium">
+            <p className="flex items-center text-sm text-indigo-500 font-medium">
                 <Building className="h-4 w-4 mr-2 text-gray-500" />
                 Infrastructure: {item.infrastructure}
             </p>
         </div>
 
-        <div className="flex flex-col  items-center pt-3 border-t border-gray-200">
+        <div className="flex flex-col  items-center pt-3 border-t border-gray-200 justify-center">
              <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                 <TrendingUp className="w-3 h-3 mt-0.5 mr-1" />
                 {item.outlook}
             </span>
             {item.metrics.map((metric, index) => (
-                <div key={index} className="text-center w-full flex clex-col justify-center items-center">
-                    <p className="text-sm w-full font-semibold text-gray-700">{metric.value}</p>
+                <div key={index} className="text-center w-full flex flex-col text-white justify-center items-center">
+                    <p className="text-sm w-full font-thin text-white pt-3">{metric.value}</p>
                     <p className="text-xs  w-full text-gray-500">{metric.title}</p>
                 </div>
             ))}
@@ -460,22 +460,23 @@ const App = () => {
                 Hello vee!
           </h1>
           <p className="text-indigo-200 text-lg max-w-2xl mx-auto">
-            This is a short rundown of what I have been finding out since Wednesday. We can go over a detailed version on call.
+            This is a quick rundown of what I have been finding out since Wednesday. We can go over a detailed version on call.
           </p>
             <p className=" text-sm pt-4 text-green-400 max-w-2xl mx-auto">
                 I have done the due diligence on all the listings available here. I will be updating them as I get more.
             </p>
         </div>
         
-        <section className="mb-12 w-full">
+        <section className="mb-12 flex items-center flex-col w-full">
           <h2 className="text-2xl font-bold text-white border-b border-indigo-600 pb-2 mb-6 flex justify-center items-center">
             
             Potential Growth Areas: Where Capital is Moving
           </h2>
-          <GrowthCarousel areas={GROWTH_AREAS_DATA} />
+          <div className='w-full  hide-scroll-xy'><GrowthCarousel areas={GROWTH_AREAS_DATA} /></div>
+          
         </section>
 
-        <section className="mb-12 bg-white p-6 rounded-xl shadow-2xl w-full">
+        <section className="mb-12 bg-white p-6 rounded-xl  shadow-2xl w-full">
             <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-indigo-400 pb-2 mb-6 flex items-center">
                 <Wallet className="h-5 w-5 mr-2 text-indigo-600" />
                 Curated Investment Opportunities
@@ -496,11 +497,15 @@ const App = () => {
             />
         </section>
 
-        <div className="mb-10 mt-10 p-6 rounded-xl shadow-md   w-full">
+        <div className="mb-10 mt-10 p-6 rounded-xl shadow-md text-center  w-full">
           <p className="text-lg font-semibold text-gray-200 mb-2">I am ready to start making calls to the agents who posted the listings. On your word I can reach out and start planning site visits.</p>
-           <p className="text-lg font-semibold text-red-500 mb-2">I have avoided Nairobi apartments for now, because of your interest in coast, but I can still add them to the list</p>
-          <p className="text-sm text-gray-600 mb-4">
+           <p className="text-lg font-semibold text-red-500 mb-2">I have avoided Nairobi apartments for now, because of your interest in coast, but I can still add them to the list (I did check out Tsavo)</p>
+          <p className="text-sm text-indigo-600 mb-4">
             We can talk about what I need to make this work then.
+          </p>
+
+          <p className="text-sm text-indigo-600 mb-4">
+            We can also talk about other locations I found that drew my interest. Like Naivasha, Nanyuki and Nakuru.
           </p>
          
         </div>
