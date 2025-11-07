@@ -1,0 +1,566 @@
+import React, { useState, useRef, useMemo } from 'react';
+import { Landmark, MapPin, Scale, Home, AlertTriangle, Building, Zap, Droplet, Wallet, Calendar, CheckCircle, ArrowLeft, TrendingUp, ChevronDown, ChevronRight } from 'lucide-react';
+
+// Color Palette based on the provided image:
+const PRIMARY_NAVY = '#0C1835'; // Deep Navy Background
+const SECONDARY_BLUE = '#E9F3FF'; // Pale Blue Accent
+
+// --- DATA STRUCTURES (Updated with all specific Apartment Listings) ---
+
+const GROWTH_AREAS_DATA = [
+  {
+    region: 'Kitengela/Syokimau/Athi River',
+    infrastructure: 'Nairobi Expressway, SGR, Bypass Roads',
+    outlook: 'High, 20–40% appreciation recently',
+    detail: 'Primed for development due to ongoing road and bypass expansions, Nairobi Expressway effects, and planned mass rapid transport systems.',
+    metrics: [{ title: 'Appreciation', value: '20-40%' }, { title: 'Risk', value: 'Medium' }],
+  },
+  {
+    region: 'Konza Technopolis Belt',
+    infrastructure: 'Roads, Tech City, Utilities',
+    outlook: 'Very High, early stage',
+    detail: 'The area surrounding Konza City will benefit from ongoing land servicing, road upgrades, and the growth of Kenya’s “Silicon Savannah”.',
+    metrics: [{ title: 'Appreciation', value: '50%+' }, { title: 'Risk', value: 'High (Long-Term)' }],
+  },
+  {
+    region: 'Thika/Ruiru/Juja',
+    infrastructure: 'Thika Superhighway, Bypasses',
+    outlook: 'Sustained, stable',
+    detail: 'Following the Thika Superhighway’s impact, these towns are anticipated to grow, especially with new link roads and bypasses.',
+    metrics: [{ title: 'Appreciation', value: '10-15%' }, { title: 'Risk', value: 'Low' }],
+  },
+  {
+    region: 'Coastal towns (Diani, Kilifi, Malindi)',
+    infrastructure: 'SGR, Highways, Ports',
+    outlook: 'High, luxury/resort demands',
+    detail: 'Will experience increased property values thanks to the expansion of ports, improved highways, and continued SGR/LAPSSET corridor development.',
+    metrics: [{ title: 'Appreciation', value: '25-35%' }, { title: 'Risk', value: 'Medium' }],
+  },
+];
+
+// --- PROPERTY LISTING DATA STRUCTURE (Expanded Apartment Listings) ---
+const INVESTMENT_DATA = [
+  // --- LAND INVESTMENTS (Kept for continuity) ---
+  {
+    id: 'l1',
+    type: 'land',
+    title: 'Thigio Gardens Phase I',
+    location: 'Thigio',
+    subLocation: 'Kiambu',
+    size: '1/8 Acre Residential Plot',
+    price: 'KES 350,000',
+    keyNote: 'High-entry value, Ready Titles.',
+    link: 'https://placeholder.com/thigio-gardens',
+    amenities: [{ icon: CheckCircle, text: 'Ready Title Deeds' }, { icon: Calendar, text: 'Installment Plans' }, { icon: MapPin, text: 'Developed Access Roads' }],
+    dueDiligence: 'Clean social media sentiment, no active court cases found.',
+    breakdown: [{ title: 'Investment Rationale', content: 'Located 40km from Nairobi CBD, this area is rapidly developing, promising high capital appreciation over the next 3-5 years. Ideal for land banking or future residential development.' }],
+  },
+  {
+    id: 'l2_mtwapa',
+    type: 'land',
+    title: 'Mtwapa Sunset Creek Plots',
+    location: 'Mtwapa',
+    subLocation: 'Mombasa',
+    size: '400 m² Residential Plot',
+    price: 'KES 1,900,000',
+    keyNote: 'Access to Sunset Creek; excellent mid-range investment.',
+    link: 'https://placeholder.com/mtwapa-creek-plots',
+    amenities: [{ icon: Building, text: 'Gated Options' }, { icon: Droplet, text: 'Creek Views' }, { icon: Scale, text: 'Freehold Title' }],
+    dueDiligence: 'High demand for affordable coastal housing in Mtwapa corridor.',
+    breakdown: [{ title: 'Coastal Rationale', content: 'These plots are strategically located to benefit from the northward expansion of Mombasa. Close proximity to essential amenities and the creek provides scenic appeal.' }],
+  },
+  {
+    id: 'l3_diani_1',
+    type: 'land',
+    title: 'Diani Prime Beach Plots (Phase I)',
+    location: 'Diani',
+    subLocation: 'Kwale',
+    size: '0.25 Acre Resort Plot',
+    price: 'KES 4,500,000+',
+    keyNote: '1.2km from main beach access point; premium segment.',
+    link: 'https://www.property24.co.ke/vacant-land-plot-for-sale-in-diani-116554648',
+    amenities: [{ icon: Building, text: 'Gated Options' }, { icon: Landmark, text: 'Near Diani Airport' }, { icon: Scale, text: 'Freehold Title' }],
+    dueDiligence: 'Strong tourism-driven market ensures high land value retention and appreciation.',
+    breakdown: [{ title: 'Coastal Rationale', content: 'Diani is a recognized high-value luxury destination. These plots are ideal for building holiday homes or boutique short-term rental facilities.' }],
+  },
+  {
+    id: 'l4_diani_2',
+    type: 'land',
+    title: 'Diani Exclusive Golf View Lots',
+    location: 'Diani',
+    subLocation: 'Kwale',
+    size: '1/2 Acre Golf-Adjacent Plot',
+    price: 'KES 6,200,000',
+    keyNote: 'Adjacent to Diani Golf Course, high-end residential potential.',
+    link: 'https://www.property24.co.ke/vacant-land-plot-for-sale-in-diani-116405654',
+    amenities: [{ icon: Building, text: 'Adjacent to Golf Course' }, { icon: Droplet, text: 'Borehole Water' }, { icon: Scale, text: '99-year Leasehold' }],
+    dueDiligence: 'Focus on residential golf community development. Leasehold status should be noted.',
+    breakdown: [{ title: 'Premium Rationale', content: 'Golf course proximity significantly boosts capital values. Target high-net-worth individuals for future resale or luxury villa development.' }],
+  },
+  
+  // --- APARTMENT INVESTMENTS (New Specific Listings) ---
+
+  // Mtwapa (4 Listings)
+  {
+    id: 'a1_mtwapa_2br_1', type: 'apartment', location: 'Mtwapa', subLocation: 'Mombasa', size: '2 Bedroom Unit', price: 'KES 3,500,000',
+    keyNote: 'Budget-friendly with great access to amenities.', link: 'https://www.property24.co.ke/2-bedroom-apartment-flat-for-sale-in-mtwapa-116536430',
+    amenities: [{ icon: Home, text: 'En-suite Bedrooms' }, { icon: Building, text: 'Swimming Pool' }, { icon: CheckCircle, text: '24/7 Security' }],
+    dueDiligence: 'High occupancy rates observed (75%+) in similar projects.', breakdown: [{ title: 'Rental Projections', content: 'Estimated monthly yield KES 40k-50k. Strong long-term rental market.' }],
+  },
+  {
+    id: 'a1_mtwapa_3br_1', type: 'apartment', location: 'Mtwapa', subLocation: 'Mombasa', size: '3 Bedroom Unit', price: 'KES 6,500,000',
+    keyNote: 'Spacious family unit, good mid-range rental income.', link: 'https://www.property24.co.ke/3-bedroom-apartment-flat-for-sale-in-mtwapa-116536049',
+    amenities: [{ icon: Building, text: 'Gym & Spa Access' }, { icon: Zap, text: 'Full Backup Power' }, { icon: Home, text: 'Balcony' }],
+    dueDiligence: 'Modern finishing, popular with expatriates and middle-class families.', breakdown: [{ title: 'Rental Projections', content: 'Estimated monthly yield KES 65k-75k. Excellent for capital gains.' }],
+  },
+  {
+    id: 'a1_mtwapa_3br_2', type: 'apartment', location: 'Mtwapa', subLocation: 'Mombasa', size: '3 Bedroom Unit (Ocean View)', price: 'KES 7,500,000',
+    keyNote: 'Premium Mtwapa listing with ocean views.', link: 'https://www.property24.co.ke/3-bedroom-apartment-flat-for-sale-in-mtwapa-116535981',
+    amenities: [{ icon: Landmark, text: 'Ocean Views' }, { icon: Droplet, text: 'Borehole Water' }, { icon: Scale, text: 'Close to Malls' }],
+    dueDiligence: 'View quality drives premium pricing. Verify unobstructed views.', breakdown: [{ title: 'Premium Feature', content: 'Ocean view units command higher short-term rental rates during peak seasons.' }],
+  },
+  {
+    id: 'a1_mtwapa_2br_2', type: 'apartment', location: 'Mtwapa', subLocation: 'Mombasa', size: '2 Bedroom Unit', price: 'KES 4,200,000',
+    keyNote: 'New development in Phase II, flexible payment plans.', link: 'https://www.property24.co.ke/2-bedroom-apartment-flat-for-sale-in-mtwapa-115475118',
+    amenities: [{ icon: Wallet, text: 'Installment Plans' }, { icon: Calendar, text: 'Q1 2026 Handover' }, { icon: CheckCircle, text: 'Tiled Floors' }],
+    dueDiligence: 'Off-plan investment; track developer progress closely.', breakdown: [{ title: 'Off-Plan Potential', content: 'Buying off-plan guarantees higher capital appreciation upon completion.' }],
+  },
+
+  // Diani (2 Listings)
+  {
+    id: 'a2_diani_2br_1', type: 'apartment', location: 'Diani', subLocation: 'Kwale', size: '2 Bedroom Unit', price: 'KES 8,500,000',
+    keyNote: 'Ideal for short-term holiday rentals (Airbnb).', link: 'https://www.property24.co.ke/2-bedroom-apartment-flat-for-sale-in-diani-116534041',
+    amenities: [{ icon: Landmark, text: 'Direct Beach Access' }, { icon: Building, text: 'Infinity Pool' }, { icon: Zap, text: 'Full Backup Power' }],
+    dueDiligence: 'High ROI from short-term holiday lets. Focus on quality property management.', breakdown: [{ title: 'Tourism Yield', content: 'Diani is a top global tourism spot. High daily rates offset acquisition costs.' }],
+  },
+  {
+    id: 'a2_diani_2br_2', type: 'apartment', location: 'Diani', subLocation: 'Kwale', size: '2 Bedroom Penthouse', price: 'KES 15,000,000',
+    keyNote: 'Luxury penthouse unit, highest potential income bracket.', link: 'https://www.property24.co.ke/2-bedroom-apartment-flat-for-sale-in-diani-116400065',
+    amenities: [{ icon: Landmark, text: 'Rooftop Terrace' }, { icon: Building, text: 'Fully Furnished Option' }, { icon: Home, text: 'Private Lift Access' }],
+    dueDiligence: 'Premium pricing requires proven track record of rental yield.', breakdown: [{ title: 'Exclusivity', content: 'Penthouse exclusivity attracts high-net-worth renters for premium holidays.' }],
+  },
+
+  // Nyali (3 Listings)
+  {
+    id: 'a3_nyali_2br', type: 'apartment', location: 'Nyali', subLocation: 'Mombasa', size: '2 Bedroom Unit', price: 'KES 11,500,000',
+    keyNote: 'Close proximity to City Mall and Nyali Reef.', link: 'https://www.property24.co.ke/2-bedroom-apartment-flat-for-sale-in-nyali-116537005',
+    amenities: [{ icon: CheckCircle, text: 'Proximity to Malls' }, { icon: Building, text: 'Gated Community' }, { icon: Scale, text: 'Freehold Title' }],
+    dueDiligence: 'Nyali is an established, high-demand residential hub.', breakdown: [{ title: 'Location Value', content: 'Excellent connectivity and essential service proximity ensure stable occupancy.' }],
+  },
+  {
+    id: 'a3_nyali_3br', type: 'apartment', location: 'Nyali', subLocation: 'Mombasa', size: '3 Bedroom Unit', price: 'KES 16,500,000',
+    keyNote: 'Modern design with dedicated parking and security.', link: 'https://www.property24.co.ke/3-bedroom-apartment-flat-for-sale-in-nyali-116591915',
+    amenities: [{ icon: Home, text: 'All En-suite' }, { icon: Zap, text: 'Solar Water Heating' }, { icon: Building, text: 'Dedicated Parking' }],
+    dueDiligence: 'Target market is growing middle/upper-middle class families.', breakdown: [{ title: 'Key Features', content: 'Smart home integrations and high-end finishes justify the price point.' }],
+  },
+  {
+    id: 'a3_nyali_1br', type: 'apartment', location: 'Nyali', subLocation: 'Mombasa', size: '1 Bedroom Unit', price: 'KES 7,800,000',
+    keyNote: 'Compact, high-yield investment targeting young professionals.', link: 'https://www.property24.co.ke/1-bedroom-apartment-flat-for-sale-in-nyali-116529400',
+    amenities: [{ icon: Wallet, text: 'Low Service Charge' }, { icon: CheckCircle, text: 'Modern Kitchenette' }, { icon: Landmark, text: 'Walkable Distance' }],
+    dueDiligence: 'Small units have high demand for single/double occupancy.', breakdown: [{ title: 'Rental Efficiency', content: 'Smaller size allows for lower entry price and potentially higher yield percentage.' }],
+  },
+  
+  // Kizingo (2 Listings)
+  {
+    id: 'a4_kizingo_3br_1', type: 'apartment', location: 'Kizingo', subLocation: 'Mombasa', size: '3 Bedroom Unit', price: 'KES 14,000,000',
+    keyNote: 'Old Town proximity, historical prestige.', link: 'https://www.property24.co.ke/3-bedroom-apartment-flat-for-sale-in-kizingo-116394034',
+    amenities: [{ icon: Landmark, text: 'Close to Old Town' }, { icon: Building, text: 'Gated Access' }, { icon: Home, text: 'Classic Design' }],
+    dueDiligence: 'Kizingo is highly sought after by established families and corporate tenants.', breakdown: [{ title: 'Prestige Value', content: "Value is driven by the exclusive location near Mombasa's administrative center." }],
+  },
+  {
+    id: 'a4_kizingo_3br_2', type: 'apartment', location: 'Kizingo', subLocation: 'Mombasa', size: '3 Bedroom Unit (Sea View)', price: 'KES 18,000,000',
+    keyNote: 'Exclusive ocean-view properties, premium rental potential.', link: 'https://www.property24.co.ke/3-bedroom-apartment-flat-for-sale-in-kizingo-116190799',
+    amenities: [{ icon: Landmark, text: 'Expansive Sea Views' }, { icon: Building, text: 'Elevated Pools' }, { icon: Home, text: 'All En-suite' }],
+    dueDiligence: 'Verify view quality. Premium segment targets high-net-worth individuals.', breakdown: [{ title: 'Key Features', content: 'These units often feature private balconies and superior finishing materials.' }],
+  },
+
+  // Rosslyn (1 Listing)
+  {
+    id: 'a5_rosslyn_2br', type: 'apartment', location: 'Rosslyn', subLocation: 'Nairobi', size: '2 Bedroom Diplomatic Suite', price: 'KES 28,000,000',
+    keyNote: 'Diplomatic Zone Focus, high security and excellent management.', link: 'https://www.property24.co.ke/2-bedroom-apartment-flat-for-sale-in-rosslyn-116069651',
+    amenities: [{ icon: Zap, text: '24/7 Power Backup' }, { icon: Building, text: 'Rooftop Lounge' }, { icon: Home, text: 'High Security' }],
+    dueDiligence: 'Target market is expatriates and UN staff; rent is typically quoted in USD.', breakdown: [{ title: 'Investment Rationale', content: 'Proximity to UN/Embassies ensures steady demand for high-end, secure rentals.' }],
+  },
+
+  // Lavington (1 Listing)
+  {
+    id: 'a6_lavington_3br', type: 'apartment', location: 'Lavington', subLocation: 'Nairobi', size: '3 Bedroom Unit', price: 'KES 17,500,000',
+    keyNote: 'Proven rental corridor, immediate income potential.', link: 'https://www.property24.co.ke/3-bedroom-apartment-flat-for-sale-in-lavington-116606406',
+    amenies: [{ icon: Wallet, text: 'Flexible Payment Plans' }, { icon: CheckCircle, text: 'Proximity to Malls' }, { icon: Home, text: 'Borehole Water' }],
+    dueDiligence: 'Differentiation through quality finishing and strong management is key in this competitive area.', breakdown: [{ title: 'Investment Rationale', content: 'Established, high-demand residential area with excellent connectivity to schools and hospitals.' }],
+  }
+];
+
+// --- COMPONENTS ---
+
+// 1. Reusable Card for a Single Property
+const SinglePropertyCard = ({ item }) => (
+  // The subLocation is not always defined for Nairobi apartments, so we ensure it doesn't break the UI
+  <div className={`bg-white p-6 rounded-xl shadow-lg border-t-4 mb-8 ${item.type === 'land' ? 'border-green-600' : 'border-blue-600'}`}>
+    <div className="pb-4 mb-4 border-b border-gray-200">
+      <h2 className="text-2xl font-extrabold text-gray-900 leading-tight">{item.title}</h2>
+      <p className="text-lg text-gray-500 mt-1">
+        {item.location} {item.subLocation && `(${item.subLocation})`} • {item.size}
+      </p>
+      <p className="text-3xl font-black text-yellow-600 mt-2">{item.price}</p>
+    </div>
+    
+    <p className="text-sm font-semibold text-indigo-600 mb-4 flex items-center">
+        <AlertTriangle className="h-4 w-4 mr-2" />
+        {item.keyNote}
+    </p>
+
+    {/* Amenities / Key Features */}
+    <div className="grid grid-cols-2 gap-3 text-sm mb-6">
+        {/* Added a safeguard for item.amenities in case it's undefined */}
+        {(item.amenities || []).map((amenity, index) => (
+            <span key={index} className="flex items-center text-gray-600">
+                <amenity.icon className="h-4 w-4 mr-2 text-indigo-400" />
+                {amenity.text}
+            </span>
+        ))}
+    </div>
+
+    {/* Breakdown Section */}
+    <h3 className="text-xl font-bold text-gray-800 mb-2">Details</h3>
+    <div className="space-y-4">
+      {item.breakdown.map((point, index) => (
+        <div key={index} className="border-l-4 border-indigo-400 pl-3 bg-gray-50 p-2 rounded-r-lg">
+          <p className="text-sm font-bold text-gray-700 mb-1">{point.title}</p>
+          <p className="text-gray-600 text-xs">{point.content}</p>
+        </div>
+      ))}
+    </div>
+
+    {/* Due Diligence */}
+     <div className="mt-6 p-3 rounded-lg bg-yellow-50 border border-yellow-300">
+        <p className="text-xs font-semibold text-yellow-800 flex items-center">
+            <Scale className="h-4 w-4 mr-2" />
+            Due Diligence:
+        </p>
+        <p className="text-xs mt-1 text-yellow-700">{item.dueDiligence}</p>
+    </div>
+
+    {/* Final Call to Action - External Link */}
+    <div className="mt-6">
+        <a 
+            href={item.link} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="w-full py-2 px-4 bg-indigo-600 text-white font-bold rounded-lg shadow-xl hover:bg-indigo-700 transition-colors flex items-center justify-center text-sm"
+        >
+            <MapPin className="h-4 w-4 mr-2" />
+            View Full Listing
+        </a>
+    </div>
+  </div>
+);
+
+
+// 2. View to display one or more property cards (flexible for ID or Location)
+const PropertyDisplayView = ({ idOrLocation, navigateBack }) => {
+    // Determine if we are viewing a group (Location Name)
+    const allLocations = useMemo(() => {
+        const landLocs = INVESTMENT_DATA.filter(i => i.type === 'land').map(i => i.location);
+        const aptLocs = INVESTMENT_DATA.filter(i => i.type === 'apartment').map(i => i.location);
+        return [...new Set([...landLocs, ...aptLocs])];
+    }, []);
+
+    const isGroup = allLocations.includes(idOrLocation);
+    
+    let propertiesToRender = [];
+    let pageTitle = '';
+
+    if (isGroup) {
+        // Group View: Filter all properties (both land and apartments) by the location name
+        propertiesToRender = INVESTMENT_DATA.filter(item => item.location === idOrLocation);
+        
+        // Group the title based on type mix, though current implementation separates them.
+        // Simplified title generation for clarity in the UI
+        const type = propertiesToRender[0]?.type === 'land' ? 'Land' : 'Apartment';
+        pageTitle = `${idOrLocation} ${type} Opportunities (${propertiesToRender.length})`;
+
+    } else {
+        // Fallback or Single Item View (Should not happen if all are grouped by location, but kept for robustness)
+        const singleItem = INVESTMENT_DATA.find(item => item.id === idOrLocation);
+        if (singleItem) {
+            propertiesToRender.push(singleItem);
+            pageTitle = singleItem.title;
+        } else {
+            return <div className="text-red-500 text-center p-10 bg-white rounded-xl shadow-lg">Error: Item or group not found.</div>;
+        }
+    }
+
+    return (
+        <div className="mb-12">
+            <button
+                onClick={navigateBack}
+                className="mb-6 inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold transition-colors p-3 bg-white rounded-lg shadow-md"
+            >
+                <ArrowLeft className="h-5 w-5 mr-2" />
+                Back to Investment Options
+            </button>
+
+            <h1 className="text-3xl font-extrabold text-white mb-6 p-4 rounded-xl bg-indigo-700/90 shadow-xl">
+                {pageTitle}
+            </h1>
+
+            {/* Render the cards */}
+            <div className="space-y-8">
+                {propertiesToRender.map(item => (
+                    <SinglePropertyCard key={item.id} item={item} />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+
+// 3. GrowthCarousel Component (Unchanged)
+const GrowthCarousel = ({ areas }) => {
+  const scrollRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const { clientWidth } = scrollRef.current;
+      const scrollAmount = direction === 'left' ? -clientWidth : clientWidth;
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const GrowthCard = ({ item }) => (
+    <div className="flex-shrink-0 w-80 md:w-96 snap-center bg-white p-6 rounded-xl shadow-lg border-t-4 border-indigo-500 text-gray-800">
+        <h3 className="text-xl font-bold mb-2 text-indigo-800">{item.region}</h3>
+        <p className="text-xs text-gray-500 mb-3">{item.detail}</p>
+        
+        <div className="space-y-2 mb-4">
+            <p className="flex items-center text-sm font-medium">
+                <Building className="h-4 w-4 mr-2 text-gray-500" />
+                **Infrastructure:** {item.infrastructure}
+            </p>
+        </div>
+
+        <div className="flex justify-between items-center pt-3 border-t border-gray-200">
+             <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                <TrendingUp className="w-3 h-3 mt-0.5 mr-1" />
+                {item.outlook}
+            </span>
+            {item.metrics.map((metric, index) => (
+                <div key={index} className="text-right">
+                    <p className="text-sm font-semibold text-gray-700">{metric.value}</p>
+                    <p className="text-xs text-gray-500">{metric.title}</p>
+                </div>
+            ))}
+        </div>
+    </div>
+  );
+
+  return (
+    <div className="relative">
+      <div 
+        ref={scrollRef} 
+        className="flex overflow-x-auto space-x-4 p-4 -m-4 snap-x snap-mandatory scrollbar-hide"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} // Hide scrollbar for Safari/IE
+      >
+        {areas.map((item, index) => (
+          <GrowthCard key={index} item={item} />
+        ))}
+      </div>
+      
+      {/* Scroll Buttons for desktop/mouse users */}
+      <button 
+        onClick={() => scroll('left')} 
+        className="absolute left-0 top-1/2 -mt-6 p-2 bg-white rounded-full shadow-lg z-10 hover:bg-gray-100 hidden md:block"
+        aria-label="Scroll left"
+      >
+        <ArrowLeft className="h-5 w-5 text-indigo-600" />
+      </button>
+      <button 
+        onClick={() => scroll('right')} 
+        className="absolute right-0 top-1/2 -mt-6 p-2 bg-white rounded-full shadow-lg z-10 hover:bg-gray-100 hidden md:block"
+        aria-label="Scroll right"
+      >
+        <ChevronRight className="h-5 w-5 text-indigo-600" />
+      </button>
+
+       {/* Custom style to hide scrollbar in modern browsers */}
+        <style>{`
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
+        `}</style>
+    </div>
+  );
+};
+
+// 4. InvestmentAccordion (Refactored to handle Location Groups for both Land and Apartments)
+const InvestmentAccordion = ({ title, itemsToDisplay, investmentData, onSelectInvestment }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  // Land items will be location names (e.g., 'Diani'). Apartment items will be IDs (e.g., 'a1').
+  const isLand = title.includes('Land');
+  
+  // For both Land and Apartments, we now display the location name and group listings under it.
+  const displayItems = useMemo(() => {
+    return itemsToDisplay.map(location => ({
+        idOrLocation: location,
+        title: location + ' Properties',
+        // Count listings based on type and location
+        subtitle: `${investmentData.filter(i => i.location === location && (isLand ? i.type === 'land' : i.type === 'apartment')).length} listings available`,
+        type: 'location',
+    }));
+  }, [itemsToDisplay, investmentData, isLand]);
+
+
+  return (
+    <div className="border border-indigo-400 rounded-xl overflow-hidden shadow-lg mb-4">
+      {/* Accordion Header/Button */}
+      {/* Note: Tailwind requires literal values for complex colors like SECONARY_BLUE, so we use a safe bg-white for hover */}
+      <button
+        className={`w-full flex justify-between items-center p-5 font-bold text-lg transition-colors ${isOpen ? `bg-indigo-100 text-indigo-900` : 'bg-white text-gray-800 hover:bg-gray-50'}`}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span>{title}</span>
+        {isOpen ? <ChevronDown className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
+      </button>
+
+      {/* Accordion Content/List */}
+      {isOpen && (
+        <div className="bg-white border-t border-indigo-200">
+          <ul className="divide-y divide-indigo-50">
+            {displayItems.map((item) => (
+              <li 
+                key={item.idOrLocation}
+                className="p-4 cursor-pointer hover:bg-indigo-50 transition-colors flex justify-between items-center"
+                onClick={() => onSelectInvestment(item.idOrLocation)}
+              >
+                <div>
+                    <span className="text-gray-700 font-medium block">{item.title}</span>
+                    <span className="text-gray-500 text-sm">{item.subtitle}</span>
+                </div>
+                <ChevronRight className="h-4 w-4 text-indigo-500" />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
+
+
+// --- MAIN APP COMPONENT ---
+
+const App = () => {
+  const [currentView, setCurrentView] = useState('list'); // 'list' or 'detail'
+  const [selectedIdOrLocation, setSelectedIdOrLocation] = useState(null); // Holds an ID (apartment) or Location (land)
+
+  const navigateToDetails = (idOrLocation) => {
+    setSelectedIdOrLocation(idOrLocation);
+    setCurrentView('detail');
+  };
+
+  const navigateBack = () => {
+    setCurrentView('list');
+    setSelectedIdOrLocation(null);
+  };
+
+  // Land: Get unique locations
+  const landLocations = useMemo(() => {
+    const locations = INVESTMENT_DATA.filter(i => i.type === 'land').map(i => i.location);
+    return [...new Set(locations)]; // ['Thigio', 'Mtwapa', 'Diani']
+  }, []);
+
+  // Apartments: Get unique locations
+  const apartmentLocations = useMemo(() => {
+    const locations = INVESTMENT_DATA.filter(i => i.type === 'apartment').map(i => i.location);
+    return [...new Set(locations)]; // ['Mtwapa', 'Diani', 'Nyali', 'Kizingo', 'Rosslyn', 'Lavington']
+  }, []);
+
+
+  const renderContent = () => {
+    if (currentView === 'detail' && selectedIdOrLocation) {
+      // Pass the Location string to the PropertyDisplayView
+      return <PropertyDisplayView idOrLocation={selectedIdOrLocation} navigateBack={navigateBack} />;
+    }
+
+    return (
+      <>
+        {/* Section 1: Introduction */}
+        <div className="mb-10 text-center w-full">
+            <h1 className="text-3xl font-extrabold text-white mb-4">
+                Hello vee!, this is what I have unearthed about investment in nairobi and mombasa.
+            </h1>
+            <p className="text-indigo-200 text-lg max-w-2xl mx-auto">
+                Dive into the market pulse for the country's two largest metropolitan areas.
+            </p>
+        </div>
+        
+        {/* Section 2: Potential Growth Areas (Carousel) */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-white border-b border-indigo-600 pb-2 mb-6 flex items-center">
+            <TrendingUp className="h-5 w-5 mr-2 text-green-400" />
+            Potential Growth Areas: Where Capital is Moving
+          </h2>
+          <GrowthCarousel areas={GROWTH_AREAS_DATA} />
+        </section>
+
+        {/* Section 3: Investment Opportunities (Accordions) */}
+        <section className="mb-12 bg-white p-6 rounded-xl shadow-2xl">
+            <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-indigo-400 pb-2 mb-6 flex items-center">
+                <Wallet className="h-5 w-5 mr-2 text-indigo-600" />
+                Curated Investment Opportunities
+            </h2>
+            
+            {/* Land Investments Accordion - Lists locations */}
+            <InvestmentAccordion 
+                title="Land Investments" 
+                itemsToDisplay={landLocations} 
+                investmentData={INVESTMENT_DATA} 
+                onSelectInvestment={navigateToDetails} 
+            />
+            
+            {/* Apartment Investments Accordion - Now lists locations */}
+            <InvestmentAccordion 
+                title="Apartment Investments" 
+                itemsToDisplay={apartmentLocations} 
+                investmentData={INVESTMENT_DATA} 
+                onSelectInvestment={navigateToDetails} 
+            />
+        </section>
+
+        {/* Call to Action (General) */}
+        <div className="mb-10 mt-10 p-6 rounded-xl shadow-md border-b-4 border-yellow-500 bg-white">
+          <p className="text-lg font-semibold text-gray-800 mb-2">Ready to secure your piece of Kenya?</p>
+          <p className="text-sm text-gray-600 mb-4">
+            Click on any listing above for details, or contact a property consultant to start the title due diligence process.
+          </p>
+          <button className="w-full py-3 bg-yellow-500 text-white font-bold rounded-lg shadow-md hover:bg-yellow-600 transition-colors flex items-center justify-center">
+            <Calendar className="h-5 w-5 mr-2" />
+            Schedule a Site Visit or Consultation
+          </button>
+        </div>
+      </>
+    );
+  };
+
+  return (
+    <div style={{ backgroundColor: PRIMARY_NAVY }} className="min-h-screen font-sans">
+      {/* Tailwind CDN is included here to ensure styles load correctly */}
+      <script src="https://cdn.tailwindcss.com"></script>
+
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {renderContent()}
+      </main>
+
+      {/* Footer (Simplified) */}
+      <footer className="bg-gray-900 text-white py-6">
+        <div className="max-w-4xl mx-auto px-4 text-center text-sm">
+          <p>&copy; 2025 Investment Pulse. Your Trusted Partner in Real Estate Investment.</p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
