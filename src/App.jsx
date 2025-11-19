@@ -468,7 +468,8 @@ const App = () => {
           
         </section>
 
-        <section className="mb-12 bg-white/30 bg-blur p-6 rounded-xl  shadow-2xl w-full">
+        <section className='w-full px-1 flex flex-col items-center'>
+          <section className="mb-12 bg-white/30 bg-blur p-6 rounded-xl  shadow-2xl md:w-4/5">
             <h2 className="text-2xl font-bold text-gray-800  border-indigo-400 pb-2 mb-6 w-full justify-center flex items-center">
                 <Wallet className="h-5 w-5 mr-2 text-indigo-600" />
                 Curated Investment Opportunities
@@ -488,6 +489,9 @@ const App = () => {
                 onSelectInvestment={navigateToDetails} 
             />
         </section>
+        </section>
+
+        
 
         <div className="mb-10 mt-10 p-6 rounded-xl shadow-md text-center  w-full">
           <p className="text-lg font-semibold text-gray-200 mb-2">I am ready to start making calls to the agents who posted the listings. On your word I can reach out and start planning site visits.</p>
