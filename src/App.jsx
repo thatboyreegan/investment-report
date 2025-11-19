@@ -1,11 +1,8 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { Landmark, MapPin, Scale, Home, AlertTriangle, Building, Zap, Droplet, Wallet, Calendar, CheckCircle, ArrowLeft, TrendingUp, ChevronDown, ChevronRight, ChevronLeft } from 'lucide-react';
 
-// Color Palette based on the provided image:
-const PRIMARY_NAVY = '#0C1835'; // Deep Navy Background
-const SECONDARY_BLUE = '#E9F3FF'; // Pale Blue Accent
+const PRIMARY_NAVY = '#0C1835';
 
-// --- DATA STRUCTURES (Updated with all specific Apartment Listings) ---
 
 const GROWTH_AREAS_DATA = [
   {
@@ -38,9 +35,7 @@ const GROWTH_AREAS_DATA = [
   },
 ];
 
-// --- PROPERTY LISTING DATA STRUCTURE (Expanded Apartment Listings) ---
 const INVESTMENT_DATA = [
-  // --- LAND INVESTMENTS (Kept for continuity) ---
   {
     id: 'l1',
     type: 'land',
@@ -97,10 +92,6 @@ const INVESTMENT_DATA = [
     dueDiligence: 'Focus on residential golf community development. Leasehold status should be noted.',
     breakdown: [{ title: 'Premium Rationale', content: 'Golf course proximity significantly boosts capital values. Target high-net-worth individuals for future resale or luxury villa development.' }],
   },
-  
-  // --- APARTMENT INVESTMENTS (New Specific Listings) ---
-
-  // Mtwapa (4 Listings)
   {
     id: 'a1_mtwapa_2br_1', type: 'apartment', location: 'Mtwapa', subLocation: 'Mombasa', size: '2 Bedroom Unit', price: 'KES 3,500,000',
     keyNote: 'Budget-friendly with great access to amenities.', link: 'https://www.property24.co.ke/2-bedroom-apartment-flat-for-sale-in-mtwapa-116536430',
@@ -314,7 +305,7 @@ const GrowthCarousel = ({ areas }) => {
   };
 
   const GrowthCard = ({ item }) => (
-    <div className="flex-shrink-0 w-80 md:w-96 snap-center bg-white/20 p-6 rounded-xl shadow-lg border-t-4 border-indigo-500 text-gray-800">
+    <div className="flex-shrink-0 w-80 md:w-96 snap-center bg-white/20 p-6 rounded-xl shadow-lg  text-gray-800">
         <h3 className="text-xl font-bold mb-2 text-green-500">{item.region}</h3>
         <p className="text-xs text-yellow-500 mb-3">{item.detail}</p>
         
@@ -345,7 +336,7 @@ const GrowthCarousel = ({ areas }) => {
       <div 
         ref={scrollRef} 
         className="flex overflow-x-auto space-x-4 p-4 -m-4 snap-x snap-mandatory scrollbar-hide"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} // Hide scrollbar for Safari/IE
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {areas.map((item, index) => (
           <GrowthCard key={index} item={item} />
@@ -367,7 +358,7 @@ const GrowthCarousel = ({ areas }) => {
         <ChevronRight className="h-5 w-5 text-indigo-600" />
       </button>
 
-       {/* Custom style to hide scrollbar in modern browsers */}
+
         <style>{`
           .scrollbar-hide::-webkit-scrollbar {
             display: none;
@@ -472,12 +463,12 @@ const App = () => {
             
             Potential Growth Areas: Where Capital is Moving
           </h2>
-          <div className='w-full  hide-scroll-xy'><GrowthCarousel areas={GROWTH_AREAS_DATA} /></div>
+          <div className='w-full lg:w-4/5  hide-scroll-xy'><GrowthCarousel areas={GROWTH_AREAS_DATA} /></div>
           
         </section>
 
-        <section className="mb-12 bg-white p-6 rounded-xl  shadow-2xl w-full">
-            <h2 className="text-2xl font-bold text-gray-800 border-b-2 border-indigo-400 pb-2 mb-6 flex items-center">
+        <section className="mb-12 bg-white/30 bg-blur p-6 rounded-xl  shadow-2xl w-full">
+            <h2 className="text-2xl font-bold text-gray-800  border-indigo-400 pb-2 mb-6 w-full justify-center flex items-center">
                 <Wallet className="h-5 w-5 mr-2 text-indigo-600" />
                 Curated Investment Opportunities
             </h2>
@@ -523,7 +514,7 @@ const App = () => {
 
       <footer className="bg-gray-900 text-white py-6">
         <div className="w-full px-4 text-center text-sm">
-          <p>&copy; 2025 Investment Pulse. Your Trusted Partner in Real Estate Investment.</p>
+          <p>&copy; 2025 . By Reagan</p>
         </div>
       </footer>
     </div>
