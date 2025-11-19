@@ -181,22 +181,22 @@ const INVESTMENT_DATA = [
 
 
 const SinglePropertyCard = ({ item }) => (
-  <div className={`bg-white p-6 rounded-xl shadow-lg border-t-4 mb-8 ${item.type === 'land' ? 'border-green-600' : 'border-blue-600'}`}>
+  <div className={`bg-white/30 bg-blur p-6 rounded-xl shadow-lg  mb-8 ${item.type === 'land' ? 'border-green-600' : 'border-blue-600'}`}>
     <div className="pb-4 mb-4 border-b border-gray-200">
-      <h2 className="text-2xl font-extrabold text-gray-900 leading-tight">{item.title}</h2>
-      <p className="text-lg text-gray-500 mt-1">
+      <h2 className="text-2xl font-extrabold text-green-500 leading-tight">{item.title}</h2>
+      <p className="text-lg text-amber-200 mt-1">
         {item.location} {item.subLocation && `(${item.subLocation})`} • {item.size}
       </p>
       <p className="text-3xl font-black text-yellow-600 mt-2">{item.price}</p>
     </div>
     
-    <p className="text-sm font-semibold text-indigo-600 mb-4 flex items-center">
+    <p className="text-sm font-semibold text-yellow-600 mb-4 flex items-center">
         <AlertTriangle className="h-4 w-4 mr-2" />
         {item.keyNote}
     </p>
-    <div className="grid grid-cols-2 gap-3 text-sm mb-6">
+    <div className="flex flex-col gap-3   text-white text-sm mb-6">
         {(item.amenities || []).map((amenity, index) => (
-            <span key={index} className="flex items-center text-gray-600">
+            <span key={index} className="flex items-center ">
                 <amenity.icon className="h-4 w-4 mr-2 text-indigo-400" />
                 {amenity.text}
             </span>
@@ -206,13 +206,13 @@ const SinglePropertyCard = ({ item }) => (
     <h3 className="text-xl font-bold text-gray-800 mb-2">Details</h3>
     <div className="space-y-4">
       {item.breakdown.map((point, index) => (
-        <div key={index} className="border-l-4 border-indigo-400 pl-3 bg-gray-50 p-2 rounded-r-lg">
+        <div key={index} className="border-l-4 border-indigo-400 pl-3 bg-gray-50/50 p-2 rounded-r-lg">
           <p className="text-sm font-bold text-gray-700 mb-1">{point.title}</p>
           <p className="text-gray-600 text-xs">{point.content}</p>
         </div>
       ))}
     </div>
-     <div className="mt-6 p-3 rounded-lg bg-yellow-50 border border-yellow-300">
+     <div className="mt-6 p-3 rounded-lg bg-yellow-50/50">
         <p className="text-xs font-semibold text-yellow-800 flex items-center">
             <Scale className="h-4 w-4 mr-2" />
             Due Diligence:
@@ -226,7 +226,7 @@ const SinglePropertyCard = ({ item }) => (
             href={item.link} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="w-full py-2 px-4 bg-indigo-600 text-white font-bold rounded-lg shadow-xl hover:bg-indigo-700 transition-colors flex items-center justify-center text-sm"
+            className=" py-3 px-4 bg-indigo-600 px-3 text-white font-bold rounded-lg shadow-xl hover:bg-indigo-700 transition-colors flex items-center justify-center text-sm"
         >
             <MapPin className="h-4 w-4 mr-2" />
             View Full Listing
@@ -268,16 +268,16 @@ const PropertyDisplayView = ({ idOrLocation, navigateBack }) => {
     }
 
     return (
-        <div className="mb-12 w-full">
+        <div className="mb-12 w-full flex-flex-col ">
             <button
                 onClick={navigateBack}
                 className="mb-6 inline-flex items-center text-gray-200 hover:text-white font-semibold  p-3  rounded-lg shadow-md"
             >
                 <ArrowLeft className="h-5 w-5 mr-2" />
                 Back to Investment Options
-            </button>
-
-            <h1 className="text-3xl font-extrabold text-white mb-6 p-4 rounded-xl bg-indigo-700/90 shadow-xl">
+        </button>
+        <div className='flex flex-col items-center justify-center px-3 py-2 mt-4'>
+          <h1 className="text-3xl font-extrabold text-white mb-6 p-4 rounded-xl  shadow-xl">
                 {pageTitle}
             </h1>
 
@@ -286,7 +286,8 @@ const PropertyDisplayView = ({ idOrLocation, navigateBack }) => {
                 {propertiesToRender.map(item => (
                     <SinglePropertyCard key={item.id} item={item} />
                 ))}
-            </div>
+            </div></div>
+            
         </div>
     );
 };
